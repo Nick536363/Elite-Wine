@@ -3,6 +3,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from datetime import datetime
 from pandas import read_excel
 from pprint import pprint
+from collections import defaultdict
+
 
 def word_define(years: int):
     str_year = str(years)
@@ -41,11 +43,7 @@ def format_data(drink_number: int, dictionary: dict):
 
 table_data = read_excel("wine2.xlsx").to_dict()
 drinks_quantity = get_dict_length(table_data)
-drinks_data = {
-    "Белые вина": [],
-    "Красные вина": [],
-    "Напитки": []
-}
+drinks_data = defaultdict(list)
 for drink_number in range(drinks_quantity):
     current_drink = format_data(drink_number, table_data)
     category = current_drink["Категория"]
