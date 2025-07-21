@@ -49,9 +49,7 @@ for drink_number in range(drinks_quantity):
     category = current_drink["Категория"]
     drinks_data[category].append(current_drink)
 
-pprint(drinks_data)
 
-raise KeyError
 env = Environment(
     loader=FileSystemLoader("."),
     autoescape=select_autoescape(["html", "xml"]),
@@ -62,9 +60,7 @@ template = env.get_template("template.html")
 rendered_page = template.render(
     years_with_client = datetime.now().year-1920,
     define_word = word_define(datetime.now().year-1920),
-    drinks_quantity = drinks_quantity,
-    table_data = table_data,
-    format_data = format_data
+    drinks_data = drinks_data
 )
 
 with open('index.html', 'w', encoding="utf8") as file:
