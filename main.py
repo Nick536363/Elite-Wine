@@ -2,7 +2,6 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from datetime import datetime
 from pandas import read_excel
-from pprint import pprint
 from collections import defaultdict
 
 
@@ -36,19 +35,19 @@ def format_data(drink_number: int, dictionary: dict):
         "Категория": data[0],
         "Название": data[1],
         "Сорт": data[2],
-        "Цена": data[3]
+        "Цена": data[3],
+        "Акция": data[5]
     }
     return dict_data
 
 
-table_data = read_excel("wine2.xlsx").to_dict()
+table_data = read_excel("wine3.xlsx", na_values=["nan"], keep_default_na=False).to_dict()
 drinks_quantity = get_dict_length(table_data)
 drinks_data = defaultdict(list)
 for drink_number in range(drinks_quantity):
     current_drink = format_data(drink_number, table_data)
     category = current_drink["Категория"]
     drinks_data[category].append(current_drink)
-
 
 env = Environment(
     loader=FileSystemLoader("."),
