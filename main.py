@@ -3,6 +3,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from datetime import datetime
 from pandas import read_excel
 from collections import defaultdict
+from argparse import ArgumentParser
 
 
 def word_define(years: int):
@@ -24,7 +25,7 @@ def word_define(years: int):
 
 
 def get_dict_length(dictionary: dict):
-    atributes = [atribute for atribute in dictionary]
+    attributes = [atribute for atribute in dictionary]
     return len(dictionary[atributes[0]])
 
 
@@ -41,29 +42,33 @@ def format_data(drink_number: int, dictionary: dict):
     return dict_data
 
 
-table_data = read_excel("wine3.xlsx", na_values=["nan"], keep_default_na=False).to_dict()
-drinks_quantity = get_dict_length(table_data)
-drinks_data = defaultdict(list)
-for drink_number in range(drinks_quantity):
-    current_drink = format_data(drink_number, table_data)
-    category = current_drink["Категория"]
-    drinks_data[category].append(current_drink)
+def main():
+    parser = ArgumentParser(description="Парсер аргументов, для запуска сервера")
+    parser.add_argument("--file", type=str, default="wine3.xlsx", help="Файл таблицы, из которого будут взяты данные")
+    args = parser.parse_args()
+    table_data = read_excel(args.file, na_values=["nan"], keep_default_na=False).to_dict()
+    drinks_quantity = get_dict_length(table_data)
+    drinks_data = defaultdict(list)
+    for drink_number in range(drinks_quantity):
+        current_drink = format_data(drink_number, table_data)
+        category = current_drink["Категория"]
+        drinks_data[category].append(current_drink)
 
-env = Environment(
-    loader=FileSystemLoader("."),
-    autoescape=select_autoescape(["html", "xml"]),
-)
+    env = Environment(
+        loader=FileSystemLoader("."),
+        autoescape=select_autoescape(["html", "xml"]),
+    )
 
-template = env.get_template("template.html")
+    template = env.get_template("template.html")
 
-rendered_page = template.render(
-    years_with_client = datetime.now().year-1920,
-    define_word = word_define(datetime.now().year-1920),
-    drinks_data = drinks_data
-)
+    rendered_page = template.render(
+        years_with_client = datetime.now().year-1920,
+        define_word = word_define(datetime.now().year-1920),
+        drinks_data = drinks_data
+    )
 
-with open('index.html', 'w', encoding="utf8") as file:
-    file.write(rendered_page)
+    with open('index.html', 'w', encoding="utf8") as file:
+        file.write(rendered_page)
 
-server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
