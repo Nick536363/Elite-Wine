@@ -25,8 +25,8 @@ def word_define(years: int):
 
 
 def get_dict_length(dictionary: dict):
-    attributes = [atribute for atribute in dictionary]
-    return len(dictionary[atributes[0]])
+    attributes = [attribute for attribute in dictionary]
+    return len(dictionary[attributes[0]])
 
 
 def format_data(drink_number: int, dictionary: dict):
