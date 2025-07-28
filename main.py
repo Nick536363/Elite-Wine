@@ -6,7 +6,7 @@ from collections import defaultdict
 from argparse import ArgumentParser
 
 
-def word_define(years: int):
+def define_word(years: int):
     str_year = str(years)
     condition = {
         "0": "лет",
@@ -30,7 +30,7 @@ def get_dict_length(dictionary: dict):
 
 
 def format_data(drink_number: int, dictionary: dict):
-    data = [dictionary[atribute][drink_number] for atribute in dictionary]
+    data = [dictionary[attribute][drink_number] for attribute in dictionary]
     dict_data = {
         "Картинка": data[4],
         "Категория": data[0],
@@ -63,7 +63,7 @@ def main():
 
     rendered_page = template.render(
         years_with_client = datetime.now().year-1920,
-        define_word = word_define(datetime.now().year-1920),
+        define_word = define_word(datetime.now().year-1920),
         drinks_data = drinks_data
     )
 
