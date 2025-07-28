@@ -24,14 +24,14 @@ def define_word(years: int):
             return "лет"
 
 
-def get_dict_length(dictionary: dict):
+def get_drinks_quantity(dictionary: dict):
     attributes = [attribute for attribute in dictionary]
     return len(dictionary[attributes[0]])
 
 
-def format_data(drink_number: int, dictionary: dict):
+def format_attributes(drink_number: int, dictionary: dict):
     data = [dictionary[attribute][drink_number] for attribute in dictionary]
-    dict_data = {
+    all_atributes = {
         "Картинка": data[4],
         "Категория": data[0],
         "Название": data[1],
@@ -39,7 +39,7 @@ def format_data(drink_number: int, dictionary: dict):
         "Цена": data[3],
         "Акция": data[5]
     }
-    return dict_data
+    return all_atributes
 
 
 def main():
@@ -47,12 +47,12 @@ def main():
     parser.add_argument("--file", type=str, default="wine3.xlsx", help="Файл таблицы, из которого будут взяты данные")
     args = parser.parse_args()
     table_data = read_excel(args.file, na_values=["nan"], keep_default_na=False).to_dict()
-    drinks_quantity = get_dict_length(table_data)
-    drinks_data = defaultdict(list)
+    drinks_quantity = get_drinks_quantity(table_data)
+    drinks_categories = defaultdict(list)
     for drink_number in range(drinks_quantity):
-        current_drink = format_data(drink_number, table_data)
+        current_drink = format_attributes(drink_number, table_data)
         category = current_drink["Категория"]
-        drinks_data[category].append(current_drink)
+        drinks_categories[category].append(current_drink)
 
     env = Environment(
         loader=FileSystemLoader("."),
@@ -64,7 +64,7 @@ def main():
     rendered_page = template.render(
         years_with_client = datetime.now().year-1920,
         define_word = define_word(datetime.now().year-1920),
-        drinks_data = drinks_data
+        drinks_categories = drinks_categories
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
