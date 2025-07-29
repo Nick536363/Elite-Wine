@@ -24,13 +24,13 @@ def define_word(years: int):
             return "лет"
 
 
-def get_drinks_quantity(dictionary: dict):
-    attributes = [attribute for attribute in dictionary]
-    return len(dictionary[attributes[0]])
+def get_drinks_quantity(drinks_info: dict):
+    attributes = [attribute for attribute in drinks_info]
+    return len(drinks_info[attributes[0]])
 
 
-def format_attributes(drink_number: int, dictionary: dict):
-    attributes = [dictionary[attribute][drink_number] for attribute in dictionary]
+def format_attributes(drink_number: int, drinks_info: dict):
+    attributes = [drinks_info[attribute][drink_number] for attribute in drinks_info]
     formatted_attributes = {
         "Картинка": attributes[4],
         "Категория": attributes[0],
