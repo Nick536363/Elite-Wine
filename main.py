@@ -31,7 +31,7 @@ def get_drinks_quantity(dictionary: dict):
 
 def format_attributes(drink_number: int, dictionary: dict):
     attributes = [dictionary[attribute][drink_number] for attribute in dictionary]
-    formatted_atributes = {
+    formatted_attributes = {
         "Картинка": attributes[4],
         "Категория": attributes[0],
         "Название": attributes[1],
@@ -39,7 +39,7 @@ def format_attributes(drink_number: int, dictionary: dict):
         "Цена": attributes[3],
         "Акция": attributes[5]
     }
-    return formatted_atributes
+    return formatted_attributes
 
 
 def main():
